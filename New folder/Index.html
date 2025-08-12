@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AIUS — Mir Minhaj</title>
+<style>
+  :root{
+    --navy:#071226;
+    --navy-2:#0b2340;
+    --accent:#1ea7ff;
+    --accent-2:#00d0ff;
+    --card:#0f2340;
+    --muted:#9fb8d6;
+    --glass: rgba(255,255,255,0.04);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+    background: linear-gradient(180deg,var(--navy),var(--navy-2));
+    color:#eaf6ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* header */
+  header{
+    position:fixed;top:0;left:0;right:0;height:72px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 28px;backdrop-filter: blur(6px);
+    background: linear-gradient(180deg, rgba(5,18,36,0.6), rgba(5,18,36,0.45));
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    z-index:999;
+  }
+  .brand{font-weight:800;font-size:1.1rem;color:var(--accent)}
+  nav{display:flex;gap:14px;align-items:center}
+  nav a{
+    color:var(--muted);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px;
+  }
+  nav a:hover{color: #fff;background: rgba(255,255,255,0.02)}
+
+  .auth {display:flex; gap:8px; align-items:center}
+  .btn {
+    background: linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:#042233;border:0;padding:8px 12px;border-radius:8px;font-weight:700;cursor:pointer;
+    box-shadow: 0 6px 18px rgba(30,167,255,0.12);
+  }
+  .btn.ghost { background: transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04); box-shadow:none; }
+
+  main{padding-top:92px;max-width:1100px;margin:0 auto}
+
+  /* hero */
+  .hero {
+    text-align:center;padding:60px 18px 24px;
+  }
+  .hero h1{font-size:2.2rem;margin-bottom:8px;color:#f0fbff;letter-spacing:0.4px}
+  .hero p{color:var(--muted);max-width:820px;margin:0 auto 18px;font-size:1.05rem}
+
+  /* sections */
+  section{padding:36px 18px}
+  .section-title{font-size:1.5rem;margin-bottom:14px;color:#e6f8ff}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    padding:18px;border-radius:12px;backdrop-filter: blur(4px);
+  }
+  .card h3{color:var(--accent);margin-bottom:8px}
+  .card p{color:var(--muted);font-size:0.95rem}
+
+  /* contact/payment */
+  .contact-box{display:flex;flex-direction:column;gap:8px;align-items:center}
+  .contact-item{background:var(--glass);padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);color:var(--muted)}
+
+  /* order form */
+  .order-wrap{max-width:880px;margin:0 auto}
+  .order-box{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+  label{display:block;font-size:0.9rem;color:var(--muted);margin-bottom:8px;font-weight:700}
+  input, select, textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#eaf6ff;font-size:0.95rem}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .col{flex:1;min-width:120px}
+  .price-box{margin-top:12px;padding:12px;border-radius:10px;border:1px dashed rgba(255,255,255,0.04);background:rgba(0,0,0,0.12);color:var(--muted)}
+  .muted{color:var(--muted);font-size:0.92rem}
+
+  .actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .wide{flex:1;min-width:150px}
+
+  /* chat */
+  .chat{max-width:760px;margin:0 auto}
+  .chat-window{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+  .messages{height:320px;overflow:auto;padding:8px;display:flex;flex-direction:column;gap:8px}
+  .msg{max-width:76%;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,0.03);color:var(--muted)}
+  .msg.user{align-self:flex-end;background:linear-gradient(90deg, rgba(30,167,255,0.12), rgba(0,208,255,0.08));color:#021f2f}
+  .msg.bot{align-self:flex-start;background:rgba(255,255,255,0.02)}
+
+  /* footer */
+  footer{padding:22px;text-align:center;color:var(--muted);border-top:1px solid rgba(255,255,255,0.02);margin-top:34px}
+  .footer-contacts{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+  /* modals */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:1200}
+  .modal{background:linear-gradient(180deg,#071226,#0b2340);border:1px solid rgba(255,255,255,0.03);padding:18px;border-radius:12px;min-width:320px;color:#eaf6ff}
+  .modal h4{margin-bottom:8px;color:var(--accent)}
+  .modal .row{margin-top:8px}
+  .close-x{position:absolute;right:18px;top:14px;color:var(--muted);cursor:pointer}
+
+  @media(max-width:760px){
+    header{padding:12px 16px}
+    .hero h1{font-size:1.6rem}
+    .messages{height:220px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AIUS — Mir Minhaj</div>
+  <nav>
+    <a href="#home" onclick="show('home')">Home</a>
+    <a href="#services" onclick="show('services')">Services</a>
+    <a href="#contact" onclick="show('contact')">Contact</a>
+    <a href="#payment" onclick="show('payment')">Payment</a>
+    <a href="#order" onclick="show('order')">Order</a>
+    <a href="#chat" onclick="show('chat')">Chatbot</a>
+  </nav>
+  <div class="auth">
+    <button class="btn ghost" onclick="openSignUp()">Sign Up</button>
+    <button class="btn" onclick="openSignIn()">Sign In</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- HOME -->
+  <section id="home" style="padding-top:28px">
+    <div class="hero">
+      <h1>AI Services — Content, Design & Automation</h1>
+      <p>Professional content writing, premium graphic design, and tailored AI automation — fast, reliable, and secure.</p>
+      <div style="margin-top:16px">
+        <button class="btn" onclick="show('order')">Start Order</button>
+      </div>
+    </div>
+    <section style="padding-top:8px">
+      <div class="section-title">Core Services</div>
+      <div class="cards" style="margin-top:12px">
+        <div class="card">
+          <h3>Content Writing</h3>
+          <p>SEO-focused articles, blogs, and sales copy crafted for conversions.</p>
+        </div>
+        <div class="card">
+          <h3>Graphic Design</h3>
+          <p>Brand assets, ads, and visuals with rapid delivery and high quality.</p>
+        </div>
+        <div class="card">
+          <h3>AI Automation</h3>
+          <p>Custom bots and workflows to scale operations and save time.</p>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="hidden">
+    <div class="section-title">Services — Details</div>
+    <div class="card" style="margin-top:12px">
+      <h3>Service Models</h3>
+      <p class="muted">Each service has configurable pricing. Use the Order page to get an instant quote and confirm orders.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="hidden">
+    <div class="section-title">Contact</div>
+    <div class="contact-box" style="margin-top:12px">
+      <div class="contact-item">WhatsApp: <strong style="color:#fff">+91 7501327451</strong></div>
+      <div class="contact-item">Email: <strong style="color:#fff">mirminhaj750@gmail.com</strong></div>
+    </div>
+  </section>
+
+  <!-- PAYMENT -->
+  <section id="payment" class="hidden">
+    <div class="section-title">Payment</div>
+    <div class="card" style="margin-top:12px;text-align:left">
+      <p class="muted">Pay via PhonePe / Google Pay / Paytm using the number below. For advance payments use the Order page to notify the team.</p>
+      <div style="margin-top:12px" class="contact-box">
+        <div class="contact-item">PhonePe / Google Pay / Paytm: <strong style="color:#fff">7501327451</strong></div>
+        <div class="muted" style="margin-top:8px">Replace with payment gateway integration later for a fully automated checkout.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORDER -->
+  <section id="order" class="hidden">
+    <div class="section-title">Order</div>
+    <div class="order-wrap">
+      <div class="order-box">
+        <label>Choose service</label>
+        <select id="serviceSelect">
+          <option value="content">Content Writing</option>
+          <option value="design">Graphic Design</option>
+          <option value="automation">AI Automation</option>
+        </select>
+
+        <div id="contentInputs" style="margin-top:12px">
+          <label>Words (for Content Writing)</label>
+          <input id="words" type="number" placeholder="e.g., 500" min="50" value="500">
+
+          <div class="row" style="margin-top:10px">
+            <div class="col">
+              <label>Delivery days</label>
+              <input id="days" type="number" min="1" value="3">
+            </div>
+            <div style="width:160px">
+              <label>File type</label>
+              <select id="fileType">
+                <option value="pdf">PDF</option>
+                <option value="docx">Word (.docx)</option>
+                <option value="xlsx">Excel (.xlsx)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top:10px" class="row">
+            <div style="display:flex;align-items:center;gap:8px">
+              <input id="isNew" type="checkbox">
+              <div class="muted">New customer (no advance if delivery ≤ 3 days)</div>
+            </div>
+          </div>
+
+          <div class="price-box" id="priceBox">
+            <div style="display:flex;justify-content:space-between"><div>Base price</div><div id="basePrice">—</div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px"><div>Time multiplier</div><div id="timeMult">—</div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;font-weight:700"><div>Total</div><div id="totalPrice">—</div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px;color:#7fffd4"><div>50% Advance</div><div id="advPrice">—</div></div>
+          </div>
+
+          <div class="actions">
+            <button class="btn wide" onclick="preparePayment()">Pay 50% & Confirm</button>
+            <button class="btn ghost wide" onclick="previewOrder()">Preview Order</button>
+          </div>
+
+          <div id="orderResult" style="margin-top:12px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHATBOT -->
+  <section id="chat" class="hidden">
+    <div class="section-title">Chatbot</div>
+    <div class="chat">
+      <div class="chat-window">
+        <div class="messages" id="messages">
+          <div class="msg bot">Hello! How can I assist you today?</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <input id="chatInput" type="text" placeholder="Type your message..." style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#eaf6ff">
+          <button class="btn" onclick="sendChat()">Send</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-contacts">
+    <div>WhatsApp: <strong style="color:#fff">+91 7501327451</strong></div>
+    <div>Email: <strong style="color:#fff">mirminhaj750@gmail.com</strong></div>
+    <div>Payments (PhonePe / GPay / Paytm): <strong style="color:#fff">7501327451</strong></div>
+  </div>
+  <div style="margin-top:12px;font-size:0.9rem;color:var(--muted)">© 2025 Mir Minhaj • All rights reserved</div>
+</footer>
+
+<!-- Sign Up / Sign In modals (hidden by default) -->
+<div id="modalRoot" class="hidden"></div>
+
+<script>
+/* CONFIG */
+const CONFIG = {
+  adminPhone: "7501327451", // notifications via WhatsApp to this number
+  adminEmail: "mirminhaj750@gmail.com",
+  currency: "INR",
+  perWord: 0.6, // INR per word for content
+  baseDays: 3,
+  urgentMultiplierPerDay: 0.08
+};
+
+/* Section navigation */
+function show(id){
+  document.querySelectorAll('main > section').forEach(s=>s.classList.add('hidden'));
+  const el = document.getElementById(id);
+  if(el) el.classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* modal helpers */
+function openModal(html){
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `<div class="modal-backdrop">${html}</div>`;
+  root.classList.remove('hidden');
+}
+function closeModal(){ document.getElementById('modalRoot').innerHTML=''; document.getElementById('modalRoot').classList.add('hidden'); }
+
+/* Sign Up / Sign In */
+function openSignUp(){
+  const html = `<div class="modal" role="dialog">
+    <div style="position:relative">
+      <div class="close-x" onclick="closeModal()">✕</div>
+      <h4>Sign Up</h4>
+      <div class="row"><input placeholder="Full name" id="su_name"></div>
+      <div class="row" style="margin-top:8px"><input placeholder="Email" id="su_email"></div>
+      <div class="row" style="margin-top:8px"><input placeholder="Password" type="password" id="su_pwd"></div>
+      <div style="margin-top:10px;display:flex;gap:8px"><button class="btn" onclick="submitSignUp()">Create account</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>
+    </div></div>`;
+  openModal(html);
+}
+function openSignIn(){
+  const html = `<div class="modal" role="dialog">
+    <div style="position:relative">
+      <div class="close-x" onclick="closeModal()">✕</div>
+      <h4>Sign In</h4>
+      <div class="row"><input placeholder="Email" id="si_email"></div>
+      <div class="row" style="margin-top:8px"><input placeholder="Password" type="password" id="si_pwd"></div>
+      <div style="margin-top:10px;display:flex;gap:8px"><button class="btn" onclick="submitSignIn()">Sign in</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>
+    </div></div>`;
+  openModal(html);
+}
+function submitSignUp(){
+  // front-end only: simulate success
+  closeModal();
+  alert('Account created (demo).');
+}
+function submitSignIn(){
+  closeModal();
+  alert('Signed in (demo).');
+}
+
+/* Price calc logic */
+function calcPrice(){
+  const service = document.getElementById('serviceSelect').value;
+  let base=0,total=0,adv=0;
+  if(service === 'content'){
+    const words = Number(document.getElementById('words').value) || 0;
+    const days = Math.max(1, Number(document.getElementById('days').value) || CONFIG.baseDays);
+    let timeMult = 1;
+    if(days < CONFIG.baseDays){
+      timeMult = 1 + (CONFIG.baseDays - days) * CONFIG.urgentMultiplierPerDay;
+    }
+    base = Math.round(words * CONFIG.perWord);
+    total = Math.round(base * timeMult);
+    adv = Math.ceil(total * 0.5);
+    document.getElementById('basePrice').innerText = base + " " + CONFIG.currency;
+    document.getElementById('timeMult').innerText = timeMult.toFixed(2) + "x";
+    document.getElementById('totalPrice').innerText = total + " " + CONFIG.currency;
+    document.getElementById('advPrice').innerText = adv + " " + CONFIG.currency;
+  } else if(service === 'design'){
+    base = 1200; total = base; adv = Math.ceil(total * 0.5);
+    document.getElementById('basePrice').innerText = base + " " + CONFIG.currency;
+    document.getElementById('timeMult').innerText = "1x";
+    document.getElementById('totalPrice').innerText = total + " " + CONFIG.currency;
+    document.getElementById('advPrice').innerText = adv + " " + CONFIG.currency;
+  } else if(service === 'automation'){
+    base = 3000; total = base; adv = Math.ceil(total * 0.5);
+    document.getElementById('basePrice').innerText = base + " " + CONFIG.currency;
+    document.getElementById('timeMult').innerText = "1x";
+    document.getElementById('totalPrice').innerText = total + " " + CONFIG.currency;
+    document.getElementById('advPrice').innerText = adv + " " + CONFIG.currency;
+  }
+  return {service, base, total, adv};
+}
+
+/* UI events */
+document.getElementById('serviceSelect').addEventListener('change',()=>{
+  calcPrice();
+});
+document.getElementById('words').addEventListener('input',calcPrice);
+document.getElementById('days').addEventListener('input',calcPrice);
+document.getElementById('fileType').addEventListener('change',calcPrice);
+
+/* Preview order */
+function previewOrder(){
+  const info = calcPrice();
+  const fileType = document.getElementById('fileType').value;
+  const isNew = document.getElementById('isNew').checked;
+  const txt = `Service: ${info.service}\nTotal: ${info.total} ${CONFIG.currency}\nFile: ${fileType}\nNew customer: ${isNew ? 'Yes' : 'No'}`;
+  document.getElementById('orderResult').innerHTML = `<div style="padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)">${txt.replace(/\n/g,'<br>')}</div>`;
+}
+
+/* Prepare payment */
+function preparePayment(){
+  const info = calcPrice();
+  const isNew = document.getElementById('isNew').checked;
+  const days = Number(document.getElementById('days').value) || CONFIG.baseDays;
+  let needAdvance = true;
+  if(isNew && days <= CONFIG.baseDays) needAdvance = false;
+
+  if(!needAdvance){
+    orderSuccess(info,0);
+    return;
+  }
+  const adv = info.adv;
+  const service = info.service;
+  const words = document.getElementById('words').value || '';
+  const fileType = document.getElementById('fileType').value;
+  const admin = CONFIG.adminPhone.replace(/\D/g,'');
+  const message = encodeURIComponent(`New Order\nService: ${service}\nWords: ${words}\nFile: ${fileType}\nAdvance: ${adv} ${CONFIG.currency}\nContact via site`);
+  const waLink = `https://wa.me/91${admin}?text=${message}`;
+
+  document.getElementById('orderResult').innerHTML =
+    `<div style="display:flex;flex-direction:column;gap:8px">
+      <div class="muted">Click the button below to open WhatsApp and send the advance payment notification. After payment, click "I Paid".</div>
+      <div style="display:flex;gap:8px">
+        <a class="btn" href="${waLink}" target="_blank">Pay ${adv} ${CONFIG.currency} via WhatsApp</a>
+        <button class="btn ghost" onclick='orderSuccess(${JSON.stringify(info)},${adv})'>I Paid (Simulate)</button>
+      </div>
+    </div>`;
+}
+
+/* Order success */
+function orderSuccess(info, paidAmount){
+  document.getElementById('orderResult').innerHTML = `<div style="padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(0,208,255,0.06), rgba(30,167,255,0.06));color:#eaf6ff">Order confirmed. Total: ${info.total} ${CONFIG.currency}. Advance: ${paidAmount} ${CONFIG.currency}. Our team will contact you shortly.</div>`;
+  // simulate sending email notification (opens mail client)
+  const subject = encodeURIComponent('New Order Confirmed');
+  const body = encodeURIComponent(`Order details:\nService: ${info.service}\nTotal: ${info.total} ${CONFIG.currency}\nAdvance paid: ${paidAmount}\n\nContact: ${CONFIG.adminPhone}`);
+  setTimeout(()=>{ window.open(`mailto:${CONFIG.adminEmail}?subject=${subject}&body=${body}`,'_blank'); },300);
+  // save locally
+  try{
+    const orders = JSON.parse(localStorage.getItem('aius_orders')||'[]');
+    orders.push({time:Date.now(),info,paidAmount});
+    localStorage.setItem('aius_orders', JSON.stringify(orders));
+  }catch(e){}
+}
+
+/* UPI/pay button guide */
+function openPaymentGuide(){
+  const html = `<div class="modal" role="dialog">
+    <div style="position:relative">
+      <div class="close-x" onclick="closeModal()">✕</div>
+      <h4>Payment Guide</h4>
+      <p class="muted">Use PhonePe / Google Pay / Paytm to send payment to the following number:</p>
+      <div style="margin-top:8px;padding:10px;border-radius:8px;background:rgba(255,255,255,0.02)"><strong>7501327451</strong></div>
+      <div style="margin-top:10px" class="muted">After payment, use the Order page to confirm payment and notify our team via WhatsApp.</div>
+      <div style="margin-top:12px"><button class="btn" onclick="closeModal()">OK</button></div>
+    </div></div>`;
+  openModal(html);
+}
+
+/* Chatbot (simple front-end) */
+function sendChat(){
+  const t =
